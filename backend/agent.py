@@ -98,7 +98,6 @@
 from langchain_classic.agents import create_react_agent
 from langchain_classic.agents import AgentExecutor
 from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
-from langchain_classic import hub 
 from langchain_classic.prompts import PromptTemplate
 from tools import knowledge_base_search
 from dotenv import load_dotenv
@@ -119,7 +118,7 @@ class SupportAgent:
         self.llm = ChatHuggingFace(llm=self.llm)
         self.tools = [knowledge_base_search]
 
-        # Simplified ReAct Prompt (Works better for Llama-3.1 in 2025)
+        # Simplified ReAct Prompt (Works better for Llama-3.1)
         template = """Answer the following questions as best you can. You have access to the following tools:
 
                     {tools}
@@ -164,18 +163,18 @@ class SupportAgent:
         )
     
     def run(self, question: str) -> dict:
-        # try:
-        result = self.agent_executor.invoke({"input": question})
-        return {
-            "answer": result["output"],
-            "status": "success"
-        }
-        # except Exception as e:
-        #     return {
-        #         "answer": "I'm sorry, I couldn't process that request.",
-        #         "status": "error",
-        #         "error": str(e)
-        #     }
+        try:
+            result = self.agent_executor.invoke({"input": question})
+            return {
+                "answer": result["output"],
+                "status": "success"
+            }
+        except Exception as e:
+            return {
+                "answer": "I'm sorry, I couldn't process that request.",
+                "status": "error",
+                "error": str(e)
+            }
 
 
 if __name__ == "__main__":
