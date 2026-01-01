@@ -1,0 +1,30 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Local data and databases
+*.db
+*.sqlite3
+chroma_db/
+data/
+
+# Docker/System files
+.git/
+.github/
+.dockerignore
+Dockerfile
+docker-compose.yml
+.env
+
+# Large AI model files (if any were downloaded locally)
+*.bin
+*.onnx
+*.pkl
+models/
+
+# OS files
+.DS_Store
+Thumbs.db

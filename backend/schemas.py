@@ -28,7 +28,7 @@ import time
 class ChatRequest(BaseModel):
     # Field(...) is used for required fields; 
     # 'pattern' replaces V1's 'regex'
-    question: str = Field(..., min_length=3, max_length=500)
+    question: str = Field(..., min_length=1, max_length=500)
     session_id: str = Field(default="default", pattern=r"^[a-zA-Z0-9_-]+$")
     
     @field_validator('question')

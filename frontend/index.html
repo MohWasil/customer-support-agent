@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCoffee Support AI</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <header class="chat-header">
+            <h1>SmartCoffee Support AI</h1>
+            <p>Get instant help with your coffee maker</p>
+        </header>
+        
+        <div id="connectionStatus" class="connection-status disconnected">
+            Connecting...
+        </div>
+        
+        <!-- Error Banner -->
+        <div id="errorBanner" class="error-banner"></div>
+        
+        <!-- Messages Area -->
+        <main class="messages-area" id="messagesArea">
+            <!-- Welcome Message -->
+            <div class="message bot">
+                <div class="message-content">
+                    Hi! I'm your SmartCoffee support assistant. I can help with troubleshooting, warranty info, and product questions. What can I help you with today?
+                </div>
+                <div class="message-timestamp" id="welcomeTimestamp"></div>
+            </div>
+        </main>
+        
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading">
+            Thinking...
+        </div>
+        
+        <!-- Input Area -->
+        <footer class="input-area">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type your question..."
+                aria-label="Type your support question"
+            />
+            <button 
+                id="sendButton" 
+                class="send-button" 
+                aria-label="Send message"
+            >
+                <svg class="send-icon" viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </footer>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>

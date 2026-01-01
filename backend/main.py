@@ -1,44 +1,10 @@
-# from fastapi import FastAPI
-# from dotenv import load_dotenv
-# from rag_simple import SimpleRAG
-# import os
-
-# # Load environment variables
-# load_dotenv()
-
-# app = FastAPI(title="Customer Support Agent API")
-
-# @app.get("/")
-# def read_root():
-#     return {"message": "Customer Support Agent is running"}
-
-# # Initialize RAG at startup
-# rag = SimpleRAG("./data/knowledge_base")
-
-# @app.post("/api/v1/chat")
-# def chat_endpoint(question: dict):
-#     q = question.get("question")
-#     result = rag.query(q)
-#     return {
-#         "question": q,
-#         "answer": result["answer"],
-#         "sources": result["sources"],
-#         "session_id": "test_123"
-#     }
-
-# @app.get("/health")
-# def health_check():
-#     return {"status": "healthy", "model": os.getenv("OLLAMA_MODEL")}
-
-
-
-
-# backend/main.py - final version for Week 2
 from fastapi import FastAPI, HTTPException, status, Depends, Request
 from fastapi.security import HTTPBearer
 from schemas import ChatRequest, ChatResponse
 from agent import SupportAgent
 import time
+
+
 
 app = FastAPI(
     title="Customer Support Agent API",
@@ -46,6 +12,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Mount frontend static files
+app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+
+@app.get("/", response_class=FileResponse)
+async def serve_frontend():
+    return FileResponse("../frontend/index.html")
 # Security
 security = HTTPBearer()  # For future auth
 agent = SupportAgent()
@@ -125,3 +100,67 @@ def health_check():
             "rate_limiter": "active"
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import json
+# import time
+# import logging
+# from agent import SupportAgent
+# from mqtt_client import MQTTClient
+
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger("agent-worker")
+
+# agent = SupportAgent()
+# mqtt = MQTTClient()
+
+# def on_request(client, userdata, msg, properties=None):
+#     try:
+#         payload = json.loads(msg.payload.decode())
+#         question = payload.get("question")
+#         session_id = payload.get("session_id")
+
+#         logger.info(f"Processing request: {session_id}")
+
+#         result = agent.run(question)
+
+#         response = {
+#             "session_id": session_id,
+#             "output": result.get("answer"),
+#             "timestamp": time.time(),
+#             "sources": []
+#         }
+
+#         mqtt.publish(
+#             f"support/responses/{session_id}",
+#             response
+#         )
+
+#     except Exception as e:
+#         logger.exception("Agent processing failed")
+
+# def main():
+#     mqtt.connect()
+#     mqtt.client.on_message = on_request
+#     mqtt.client.subscribe("support/requests/+")
+#     mqtt.client.loop_forever()
+
+# if __name__ == "__main__":
+#     main()

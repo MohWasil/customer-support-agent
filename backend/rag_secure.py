@@ -228,3 +228,9 @@ class SecureRAG:
 
 # Singleton
 secure_rag = SecureRAG("./data/knowledge_base")
+# _secure_rag = None
+# def get_secure_rag():
+#     global _secure_rag
+#     if _secure_rag is None:
+#         _secure_rag = SecureRAG("./data/knowledge_base")
+#     return _secure_rag

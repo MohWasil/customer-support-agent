@@ -1,0 +1,34 @@
+{
+  "title": "Customer Support Agent Metrics",
+  "uid": "agent-metrics-001",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "title": "Request Rate",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [{ "expr": "sum(agent_requests_total)" }]
+    },
+    {
+      "title": "Response Latency (p95)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [{ "expr": "histogram_quantile(0.95, rate(agent_response_latency_seconds_bucket[1m]))" }]
+    },
+    {
+      "title": "Token Usage (Total)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [{ "expr": "sum(agent_tokens_total)" }]
+    },
+    {
+      "title": "User Feedback",
+      "type": "piechart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        { "expr": "sum(user_feedback_total{rating='thumbs_up'})", "legendFormat": "Positive" },
+        { "expr": "sum(user_feedback_total{rating='thumbs_down'})", "legendFormat": "Negative" }
+      ]
+    }
+  ]
+}
