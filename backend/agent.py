@@ -445,25 +445,34 @@ class SupportAgent:
         )
 
         # 2. ReAct prompt
-        template = """Answer the following questions as best you can. You have access to the following tools:
+        template = """Answer the following questions accurately based ONLY on the provided company information. 
 
-                    {tools}
-                    
-                    Use the following format:
+                        Role: You are a strict Customer Support Agent for SmartCoffee. 
 
-                    Question: the input question you must answer
-                    Thought: you should always think about what to do
-                    Action: the action to take, should be one of [{tool_names}]
-                    Action Input: the input to the action
-                    Observation: the result of the action
-                    ... (this Thought/Action/Action Input/Observation can repeat up to 3 times)
-                    Thought: I now know the final answer
-                    Final Answer: the final answer to the original input question
-                    
-                    Begin!
+                        Constraints:
+                        1. GREETINGS: If the user says "Hi", "Hello", or offers general pleasantries, respond warmly without using any tools.
+                        2. SCOPE: You only answer questions related to company policy, products, and services. 
+                        3. NO OUTSIDE KNOWLEDGE: Do not use your internal general knowledge to answer questions about the world. If the information is not in the tools/RAG, state: "I'm sorry, I don't have information on that specific topic based on company records."
+                        4. NO HALLUCINATION: Never make up policies or product features. 
 
-                    Question: {input}
-                    Thought: {agent_scratchpad}"""
+                        You have access to the following tools:
+                        {tools}
+
+                        Use the following format:
+                        Question: the input question you must answer
+                        Thought: I need to determine if this is a greeting or a company-related inquiry.
+                        Action: [{tool_name} or None]
+                        Action Input: the search query
+                        Observation: the tool output
+                        ... (repeat Thought/Action/Action Input/Observation if needed)
+                        Thought: I now have the information required (or I recognize this as a greeting or general info of the Company), if you recognized the request is out of company scope, think of not company's policy.
+                        Final Answer: the final response to the user.
+
+                        Begin!
+
+                        Question: {input}
+                        Thought: {agent_scratchpad}
+"""
 
         self.prompt = PromptTemplate.from_template(template)
         
