@@ -1,6 +1,4 @@
-from prometheus_client import Counter, Histogram, Gauge, generate_latest
-from fastapi import Response, FastAPI
-
+from prometheus_client import Counter, Histogram, Gauge
 
 
 """
@@ -34,7 +32,7 @@ TOKEN_USAGE = Counter(
 USER_FEEDBACK = Counter(
     'user_feedback_total',
     'User feedback ratings',
-    ['rating']  # thumbs_up / thumbs_down
+    ['rating'] 
 )
 
 ACTIVE_SESSIONS = Gauge('active_sessions', 'Number of active sessions')
@@ -44,10 +42,3 @@ def record_agent_metrics(model: str, latency: float, tokens_in: int, tokens_out:
     AGENT_REQUESTS.labels(model=model, status=status).inc()
     TOKEN_USAGE.labels(model=model, type='input').inc(tokens_in)
     TOKEN_USAGE.labels(model=model, type='output').inc(tokens_out)
-
-
-# # Add metrics endpoint to api_mqtt.py
-# app = FastAPI()
-# @app.get("/metrics")
-# def metrics():
-#     return Response(generate_latest(), media_type="text/plain")
