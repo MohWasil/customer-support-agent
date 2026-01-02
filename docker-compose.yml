@@ -2,6 +2,10 @@
 # # version: '3.8'
 
 services:
+  your-app:
+    volumes:
+      - .:/app  
+
   # cadvisor service for container monitoring
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1 # Use a specific stable 2025 version
