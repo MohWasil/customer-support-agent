@@ -1,26 +1,3 @@
-# global:
-#   scrape_interval: 15s
-#   evaluation_interval: 15s
-
-# scrape_configs:
-#   - job_name: 'fastapi-gateway'
-#     static_configs:
-#       - targets: ['fastapi-gateway:8000']
-#     metrics_path: '/metrics'
-
-#   - job_name: 'cadvisor'
-#     static_configs:
-#       - targets: ['cadvisor:8080']
-
-#   - job_name: 'prometheus'
-#     static_configs:
-#       - targets: ['localhost:9090']
-#   - job_name: 'agent-worker'
-#     static_configs:
-#       - targets: ['agent-worker:8001']
-#       # - targets: ['prometheus:9090']
-
-
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
