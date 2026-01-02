@@ -1,103 +1,5 @@
-# version: '3.8'
-
-# services:
-#   mosquitto:
-#     image: eclipse-mosquitto:2.0
-#     container_name: mqtt-broker
-#     ports:
-#       - "1883:1883"
-#     volumes:
-#       - ./mosquitto/config:/mosquitto/config
-#       - ./mosquitto/data:/mosquitto/data
-#       - ./mosquitto/log:/mosquitto/log
-#     restart: unless-stopped
-#     networks:
-#       - agent-network
-
-#   chromadb:
-#     image: chromadb/chroma:latest
-#     container_name: chroma-db
-#     ports:
-#       - "8001:8000"  # Chroma's default port
-#     volumes:
-#       - chroma_data:/chroma
-#     environment:
-#       - CHROMA_PERSIST_DIRECTORY=/chroma
-#     restart: unless-stopped
-#     networks:
-#       - agent-network
-
-#   agent-worker:
-#     build: ./backend
-#     container_name: agent-worker
-#     environment:
-#       - HF_API_TOKEN=${HF_API_TOKEN}
-#       - OLLAMA_BASE_URL=http://ollama:11434
-#       - PYTHONUNBUFFERED=1
-#     depends_on:
-#       - mosquitto
-#       - chromadb
-#     networks:
-#       - agent-network
-#     restart: unless-stopped
-
-#   fastapi-gateway:
-#     build: ./backend
-#     container_name: fastapi-gateway
-#     ports:
-#       - "${APP_PORT:-8000}:8000"
-#     environment:
-#       - HF_API_TOKEN=${HF_API_TOKEN}
-#       - OLLAMA_BASE_URL=http://ollama:11434
-#       - PYTHONUNBUFFERED=1
-#     depends_on:
-#       - mosquitto
-#       - chromadb
-#     networks:
-#       - agent-network
-#     restart: unless-stopped
-
-#   # For deployment phase - add Ollama service later
-#   # ollama:
-#   #   image: ollama/ollama:latest
-#   #   container_name: ollama
-#   #   ports:
-#   #     - "11434:11434"
-#   #   volumes:
-#   #     - ollama_data:/root/.ollama
-#   #   networks:
-#   #     - agent-network
-
-# frontend:
-#     build: ./frontend
-#     container_name: support-frontend
-#     ports:
-#       - "3000:80"
-#     depends_on:
-#       - fastapi-gateway
-#     networks:
-#       - agent-network
-#     restart: unless-stopped
-#     environment:
-#       - NGINX_HOST=localhost
-#       - NGINX_PORT=80
-
-# volumes:
-#   chroma_data:
-#   ollama_data:
-
-# networks:
-#   agent-network:
-#     driver: bridge
-
-
-
-
-
-
-
-
-# version: '3.8'
+# # Best compose file which works properly
+# # version: '3.8'
 
 services:
   # cadvisor service for container monitoring
@@ -139,9 +41,12 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "3001:3000"  # Use 3001 to avoid conflict with frontend
+      - "3001:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      # - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/graf_admin_pass
+    secrets: # added this new
+      - graf_admin_pass
     volumes:
       - grafana_data:/var/lib/grafana
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
@@ -187,7 +92,8 @@ services:
     # ADD THIS LINE BELOW:
     command: python -u mqtt_client.py 
     volumes:
-      - D:/Python_projects/customer-support-agent/backend/data/knowledge_base:/app/data/knowledge_base
+      - ./backend/data/knowledge_base:/app/data/knowledge_base
+      # - D:/Python_projects/customer-support-agent/backend/data/knowledge_base:/app/data/knowledge_base
     env_file:
       - .env
     environment:
@@ -251,4 +157,155 @@ networks:
   agent-network:
     driver: bridge
 
+secrets: # added this new as well
+  graf_admin_pass:
+    file: ./grafana_password.txt
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Secure compose file.
+
+
+# services:
+#   cadvisor:
+#     image: gcr.io/cadvisor/cadvisor:v0.49.1
+#     container_name: cadvisor
+#     # Removed public ports 8082 for security
+#     volumes:
+#       - /:/rootfs:ro
+#       - /var/run:/var/run:ro
+#       - /sys:/sys:ro
+#       - /var/lib/docker/:/var/lib/docker:ro
+#       - /dev/disk/:/dev/disk:ro
+#     devices:
+#       - /dev/kmsg
+#     privileged: true
+#     restart: unless-stopped
+#     networks:
+#       - agent-network
+
+#   prometheus:
+#     image: prom/prometheus:latest
+#     container_name: prometheus
+#     # Only expose ports if you need to see Prometheus UI from outside
+#     volumes:
+#       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+#       - prometheus_data:/prometheus
+#     command:
+#       - '--config.file=/etc/prometheus/prometheus.yml'
+#       - '--storage.tsdb.path=/prometheus'
+#     networks:
+#       - agent-network
+
+#   grafana:
+#     image: grafana/grafana:latest
+#     container_name: grafana
+#     ports:
+#       - "3001:3000" 
+#     environment:
+#       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+#     volumes:
+#       - grafana_data:/var/lib/grafana
+#       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+#       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+#     depends_on:
+#       - prometheus
+#     networks:
+#       - agent-network
+
+#   mosquitto:
+#     image: eclipse-mosquitto:2.0
+#     container_name: mqtt-broker
+#     # Removed public port 1883. Fastapi-gateway connects internally.
+#     volumes:
+#       - ./mosquitto/config:/mosquitto/config
+#       - ./mosquitto/data:/mosquitto/data
+#       - ./mosquitto/log:/mosquitto/log
+#     restart: unless-stopped
+#     networks:
+#       - agent-network
+
+#   chromadb:
+#     image: chromadb/chroma:latest
+#     container_name: chroma-db
+#     # Removed public port 8001 to prevent data theft.
+#     volumes:
+#       - chroma_data:/chroma
+#     environment:
+#       - CHROMA_PERSIST_DIRECTORY=/chroma
+#     restart: unless-stopped
+#     networks:
+#       - agent-network
+
+#   agent-worker:
+#     build: ./backend
+#     container_name: agent-worker
+#     command: python -u mqtt_client.py 
+#     volumes:
+#       # FIXED: Use relative path for Linux compatibility
+#       - ./backend/data/knowledge_base:/app/data/knowledge_base
+#     env_file:
+#       - .env
+#     environment:
+#       - ANONYMIZED_TELEMETRY=False
+#       - ROLE=worker
+#       - MQTT_BROKER_HOST=mosquitto
+#       - GROQ_API_KEY=${Grouq_API_KEY}
+#       - HF_API_TOKEN=${HF_API_TOKEN}
+#     depends_on:
+#       - mosquitto
+#     networks:
+#       - agent-network
+#     restart: unless-stopped
+
+#   fastapi-gateway:
+#     build: ./backend
+#     container_name: fastapi-gateway
+#     # Removed public port 8000. Access goes through Nginx (Frontend).
+#     env_file:
+#       - .env
+#     environment:
+#       - ROLE=worker 
+#       - GROQ_API_KEY=${Grouq_API_KEY}
+#       - MQTT_BROKER_HOST=mosquitto  
+#       - HF_API_TOKEN=${HF_API_TOKEN}
+#     depends_on:
+#       - mosquitto
+#       - chromadb
+#     networks:
+#       - agent-network
+#     restart: unless-stopped
+#     command: uvicorn api_mqtt:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 600 --timeout-graceful-shutdown 600
+
+#   frontend:
+#     build: ./frontend
+#     container_name: support-frontend
+#     ports:
+#       - "3000:80" # This is the ONLY entry point for users
+#     volumes:
+#       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+#     depends_on:
+#       - fastapi-gateway
+#     networks:
+#       - agent-network
+#     restart: unless-stopped
+
+# volumes:
+#   chroma_data:
+#   prometheus_data:
+#   grafana_data:
+
+# networks:
+#   agent-network:
+#     driver: bridge
