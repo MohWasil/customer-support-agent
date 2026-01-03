@@ -2,21 +2,27 @@
 # # version: '3.8'
 
 services:
-  your-app:
-    volumes:
-      - .:/app  
+  # your-app:
+  #   volumes:
+  #     - .:/app  
 
   # cadvisor service for container monitoring
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1 # Use a specific stable 2025 version
     container_name: cadvisor
+    command:
+      - '--docker_only=true'
+      - '--housekeeping_interval=10s'
+      - '--disable_metrics=disk,diskIO,tcp,udp'
+      - '--disable_metrics=disk,diskIO,tcp,udp,referenced_memory,hugetlb' # Added referenced_memory & hugetlb
+      - '--enable_load_reader=false' # Prevents CPU load reader  
     ports:
       - "8082:8080" # Map to 8082 to avoid any local conflicts
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      # - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     devices:
       - /dev/kmsg
