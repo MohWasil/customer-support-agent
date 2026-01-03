@@ -480,8 +480,7 @@ class SupportAgent:
         # 3. list of tools
         self.tools = [knowledge_base_search]
 
-        # 4. Create the ReAct agent
-        # create_react_agent connects the LLM, tools, and prompt logic.
+        # 4. create_react_agent connects the LLM, tools, and prompt logic.
         self.agent = create_react_agent(
             llm=self.llm,
             tools=self.tools,
@@ -497,14 +496,6 @@ class SupportAgent:
             handle_parsing_errors=True 
         )
 
-    # def run(self, user_input: str):
-    #     """Execute the agent with a specific user question."""
-    #     # return self.executor.invoke({"input": user_input})
-    #     result = self.executor.invoke({"input": user_input})
-    #     return {
-    #         "answer": result["output"],
-    #         "status": "success"
-    #     }
     def run(self, user_input: str):
         start_time = time.time()
         
@@ -537,9 +528,9 @@ class SupportAgent:
                 raise e
 
 
-# Example Usage:
 if __name__ == "__main__":
     agent = SupportAgent()
-
+    
+    # Use it for test.    
     # response = agent.run("What are the store hours?")
     # print(response["answer"])
