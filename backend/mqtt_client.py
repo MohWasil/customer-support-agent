@@ -23,7 +23,7 @@ class MQTTClient:
         self.broker_host = broker_host
         self.broker_port = broker_port
         self.message_handlers: Dict[str, Callable] = {}
-        # Create loop but don't run it yet
+        # Create loop
         self.loop = asyncio.new_event_loop()
         # Keep a reference to the thread where the loop will run
         self.loop_thread = None
@@ -77,7 +77,6 @@ class MQTTClient:
             # Route to handler
             if topic.startswith("support/requests/"):
                 # Schedule the async handler on the dedicated loop
-                # Ensure self.loop is running for this to work
                 asyncio.run_coroutine_threadsafe(
                     self._handle_request(user_id, payload),
                     self.loop # Use the dedicated loop
@@ -109,14 +108,13 @@ class MQTTClient:
                 "timestamp": time.time() 
             }
             
-            # Publish using the sync method (runs in the MQTT client's thread context)
-            # The _handle_request is async, but publish can be sync
+            # Publish using the sync method 
             self.publish(response_topic, response_payload)
             
         except Exception as e:
             print(f"Agent processing error: {e}")
             import traceback
-            traceback.print_exc() # Print full stack trace for debugging
+            traceback.print_exc() 
             # Publish error response
             self.publish(
                 f"support/responses/{user_id}",
@@ -124,7 +122,7 @@ class MQTTClient:
                     "session_id": payload.get("session_id", user_id),
                     "answer": "An error occurred processing your request.",
                     "status": "error",
-                    "timestamp": time.time() # Now 'time' is imported
+                    "timestamp": time.time() 
                 }
             )
     
@@ -132,10 +130,8 @@ class MQTTClient:
         """Secure publish with JSON validation"""
         try:
             message = json.dumps(payload, ensure_ascii=False)
-            # Use the MQTT client's publish method (it's thread-safe)
-            # QoS 1 ensures at least once delivery attempt
             self.client.publish(topic, message, qos=1)
-            print(f"Published to {topic}: {payload}") # Added payload for debugging
+            print(f"Published to {topic}: {payload}") 
         except Exception as e:
             print(f"Publish error: {e}")
     
@@ -154,13 +150,10 @@ if __name__ == "__main__":
     mqtt_client = MQTTClient(broker_host="mosquitto")
     mqtt_client.connect()
 
-    # Run the asyncio loop in the main thread (or a dedicated thread)
-    # Option 1: Run the loop in the main thread
     print("Worker is now listening for requests...")
     print("Starting asyncio loop...")
     try:
         # This will block and run the asyncio event loop,
-        # allowing scheduled tasks (like _handle_request) to run
         mqtt_client.loop.run_forever()
     except KeyboardInterrupt:
         print("Interrupted, stopping...")
@@ -168,24 +161,6 @@ if __name__ == "__main__":
         mqtt_client.disconnect()
         mqtt_client.loop.close() # Close the loop after stopping
         print("Loop closed.")
-
-
-    # Option 2 (Alternative): Run the loop in a background thread
-    # import threading
-    # def run_loop():
-    #     asyncio.set_event_loop(mqtt_client.loop) # Set loop for this thread
-    #     mqtt_client.loop.run_forever()
-    # mqtt_client.loop_thread = threading.Thread(target=run_loop, daemon=True)
-    # mqtt_client.loop_thread.start()
-    # try:
-    #     while True:
-    #         time.sleep(1)
-    # except KeyboardInterrupt:
-    #     mqtt_client.disconnect()
-    #     mqtt_client.loop.call_soon_threadsafe(mqtt_client.loop.stop) # Stop loop from main thread
-    #     mqtt_client.loop_thread.join() # Wait for loop thread to finish
-    #     mqtt_client.loop.close()
-    #     print("Loop closed.")
     
     
     
