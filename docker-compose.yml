@@ -2,28 +2,27 @@
 # # version: '3.8'
 
 services:
-  # your-app:
-  #   volumes:
-  #     - .:/app  
-
   # cadvisor service for container monitoring
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.49.1 # Use a specific stable 2025 version
+    # image: gcr.io/cadvisor/cadvisor:v0.49.1
+    image: ghcr.io/google/cadvisor:0.55.1
     container_name: cadvisor
     command:
       - '--docker_only=true'
       - '--housekeeping_interval=10s'
-      - '--disable_metrics=disk,diskIO,tcp,udp'
+      # - '--disable_metrics=disk,diskIO,tcp,udp'
       - '--disable_metrics=disk,diskIO,tcp,udp,referenced_memory,hugetlb' # Added referenced_memory & hugetlb
-      - '--enable_load_reader=false' # Prevents CPU load reader  
+      # - '--enable_load_reader=false' # Prevents CPU load reader  
+      - '--cloud_provider_architecture=none' # ADD THIS to stop Cloud/GCE 
     ports:
       - "8082:8080" # Map to 8082 to avoid any local conflicts
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
-      # - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Add this for API access
+      # - /dev/disk/:/dev/disk:ro
     devices:
       - /dev/kmsg
     privileged: true
@@ -145,7 +144,7 @@ services:
     ports:
       - "3000:80"
     volumes:
-      # Use this exact path for the destination (right side)
+      # Use this exact path for the destination
       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - fastapi-gateway
