@@ -65,10 +65,6 @@ async def record_feedback(feedback: dict):
     USER_FEEDBACK.labels(rating=feedback["rating"]).inc()
     return {"status": "recorded"}
 
-# @app.get("/metrics")
-# def metrics():
-#     # This exposes ALL metrics from your entire app to Prometheus
-#     return Response(generate_latest(), media_type="text/plain")
 
 @app.get("/metrics")
 def metrics():
@@ -162,7 +158,7 @@ async def handle_chat(request: ChatRequest) -> ChatResponse:
 async def chat(request: ChatRequest):
     return await handle_chat(request)
 
-# ✅ Sync alias for frontend compatibility
+# Sync alias for frontend compatibility
 @app.post("/api/v1/chat/sync", response_model=ChatResponse)
 async def chat_sync(request: ChatRequest):
     return await handle_chat(request)
