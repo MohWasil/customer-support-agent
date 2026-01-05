@@ -61,7 +61,6 @@ app.add_middleware(
 """
 @app.post("/api/v1/feedback")
 async def record_feedback(feedback: dict):
-    # Now this works because it was imported!
     USER_FEEDBACK.labels(rating=feedback["rating"]).inc()
     return {"status": "recorded"}
 
@@ -102,7 +101,6 @@ async def mqtt_response_listener(app: FastAPI):
 
     mqtt_client.client.on_message = on_message
     mqtt_client.client.subscribe("support/responses/+")
-    # mqtt_client.subscribe("support/requests/#")
     logger.info("Subscribed to support/responses/+")
 
     while True:

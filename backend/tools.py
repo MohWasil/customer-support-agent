@@ -26,10 +26,8 @@ if not KNOWLEDGE_BASE_PATH:
     rag_engine = None
 else:
     print(f"Loading Knowledge Base from: {KNOWLEDGE_BASE_PATH}")
-# KNOWLEDGE_BASE_PATH = os.getenv("KNOWLEDGE_BASE_PATH", "./data/knowledge_base")
 
-# Initialize the local RAG engine once (Singleton pattern)
-# This will load coffee_reset.md and warranty.md into ChromaDB
+# Initialize the local RAG engine once
 try:
     rag_engine = MemoryRAG(docs_path=KNOWLEDGE_BASE_PATH)
 except Exception as e:
