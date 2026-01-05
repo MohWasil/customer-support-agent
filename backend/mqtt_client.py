@@ -69,7 +69,7 @@ class MQTTClient:
             payload = json.loads(msg.payload.decode())
             topic = msg.topic
             
-            # Extract user_id from topic: support/requests/{user_id}
+            # Extract user_id from topic:
             user_id = topic.split("/")[-1]
             
             print(f"Received message on {topic}: {payload}")
