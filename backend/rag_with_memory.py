@@ -40,7 +40,7 @@ class MemoryRAG:
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         self.db = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db")
 
-        # 3. LLM: use the model argument, and pass model kwargs
+        # 3. LLM: use the model argument
         hf_token = os.getenv("HF_API_TOKEN")
         if not hf_token:
             raise RuntimeError("HF_API_TOKEN environment variable not set")
