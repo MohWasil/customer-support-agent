@@ -654,19 +654,6 @@ Answer in 2-3 sentences. Be helpful but concise."""
 
 # Quick test
 if __name__ == "__main__":
-#     ### New updates comes on to reduce time latency
-#     _rag_instance = None
-
-#     def get_rag_instance(docs_path: str = "./backend/data/knowledge_base"):
-#         global _rag_instance
-#         if _rag_instance is None:
-#             print("Initializing MemoryRAG for the first time (Loading ChromaDB)...")
-#             _rag_instance = MemoryRAG(docs_path)
-#         return _rag_instance
-    
-
-
-    
     rag = MemoryRAG("./backend/data/knowledge_base", model="meta-llama/Llama-3.1-8B-Instruct")
     # print("Q1: How do I reset my coffee maker?")
     # r1 = rag.query("How do I reset my coffee maker?", session_id="test_session_1")
