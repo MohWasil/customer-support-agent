@@ -7,5 +7,4 @@ providers:
     disableDeletion: false
     editable: true
     options:
-      # This MUST match the internal container path in your docker-compose
       path: /etc/grafana/provisioning/dashboards
