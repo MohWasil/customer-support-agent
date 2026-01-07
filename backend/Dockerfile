@@ -1,6 +1,6 @@
 FROM python:3.10.9-slim
 
-# Security: Create non-root user
+
 RUN useradd -m -u 1000 appuser
 
 WORKDIR /app
@@ -23,12 +23,11 @@ COPY ./data/knowledge_base /app/data/knowledge_base
 # Copy application code (from the current build context directory ./backend)
 COPY . .
 
-# Create non-root user ownership
+
 RUN chown -R appuser:appuser /app
 USER appuser
 
 # Health check
-# If not, you might need to add one or adjust the health check command
 HEALTHCHECK --interval=30s --timeout=3s \
     CMD python -c "import requests; requests.get('http://localhost:8000/health')"
 
