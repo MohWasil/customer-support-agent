@@ -1,5 +1,5 @@
 import numpy as np
-# Restore the deleted alias before other packages try to use it
+
 if not hasattr(np, 'float_'):
     np.float_ = np.float64
 
