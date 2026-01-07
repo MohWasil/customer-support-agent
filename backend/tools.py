@@ -44,7 +44,6 @@ def knowledge_base_search(query: str) -> str:
         return "The knowledge base is currently unavailable."
     
     # query() in rag_with_memory handles the local search and memory logic
-    # Using 'system_tool' as session_id for internal search context
     result = rag_engine.query(query, session_id="agent_tool_session")
     
     return result.get("answer", "No relevant information found in the documentation.")
