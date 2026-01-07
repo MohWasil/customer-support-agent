@@ -8,6 +8,7 @@ grafana_password.txt
 *.egg-info/
 gemini_test.py
 test_hf.py
+main.py
 # ML
 chroma_db/
 *.safetensors
