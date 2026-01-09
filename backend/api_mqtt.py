@@ -197,14 +197,12 @@ from loguru import logger
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from fastapi import FastAPI, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
-
-# Import your custom modules
 from monitoring import USER_FEEDBACK
 from schemas import ChatRequest, ChatResponse
 from mqtt_client import MQTTClient
 
 # -------------------------------------------------
-# 1. Loguru Configuration (Standard for 2026)
+# 1. Loguru Configuration
 # -------------------------------------------------
 # Remove default logger and setup for production with JSON-like extra context
 logger.remove()
@@ -222,7 +220,7 @@ logger = logger.bind(session_id="SYSTEM")
 # -------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Starting API Gateway 2026...")
+    logger.info("Starting API Gateway...")
 
     app.state.main_loop = asyncio.get_running_loop()
     app.state.pending_requests = {}
