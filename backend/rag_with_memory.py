@@ -213,12 +213,18 @@ class MemoryRAG:
             # 4. Chains Setup
             self.retriever = self.db.as_retriever(search_kwargs={"k": 2})
             
-            # Contextualize Question Prompt
+            contextualize_q_system_prompt = (
+            "Given a chat history and the latest user question "
+            "which might reference context in the chat history, "
+            "formulate a standalone question which can be understood "
+            "without the chat history. Do NOT answer the question, "
+            "just reformulate it if needed and otherwise return it as is."
+        )
             context_prompt = ChatPromptTemplate.from_messages([
-                ("system", "Given chat history and a user question, formulate a standalone question. Do NOT answer it."),
-                MessagesPlaceholder(variable_name="chat_history"),
-                ("human", "{input}"),
-            ])
+            ("system", contextualize_q_system_prompt),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("human", "{input}"),
+        ])
 
             history_aware_retriever = create_history_aware_retriever(self.llm, self.retriever, context_prompt)
 
@@ -244,7 +250,7 @@ class MemoryRAG:
         return self.store[session_id]
 
     def query(self, question: str, session_id: str = "default_session") -> dict:
-        # Create a logger tied to this session for 2026 traceability
+        # Create a logger tied to this session
         session_logger = logger.bind(session_id=session_id)
         
         conversational_rag_chain = RunnableWithMessageHistory(
@@ -263,7 +269,7 @@ class MemoryRAG:
                 config={"configurable": {"session_id": session_id}},
             )
 
-            # Extract sources directly from the result (result["context"] contains the docs)
+            # Extract sources directly from the result
             sources = list(set([doc.metadata.get("source", "unknown") for doc in result.get("context", [])]))
 
             session_logger.success("RAG Query completed.")
@@ -274,7 +280,6 @@ class MemoryRAG:
 
         except Exception as e:
             session_logger.error(f"RAG Query Error: {e}")
-            # Do NOT print(traceback); session_logger.exception already handles it
             return {
                 "answer": "I'm sorry, I encountered an error accessing my knowledge base.",
                 "sources": []

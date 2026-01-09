@@ -1,3 +1,7 @@
+"""
+    Best client code.
+"""
+
 # import numpy as np
 # if not hasattr(np, 'float_'):
 #     np.float_ = np.float64
@@ -170,9 +174,10 @@
 
 
 
-
+"""
+    For production
+"""
 import numpy as np
-import os
 import sys
 import json
 import asyncio
@@ -224,7 +229,7 @@ class MQTTClient:
             self.client.on_connect = self._on_connect
             self.client.on_message = self._on_message
             self.client.on_disconnect = self._on_disconnect
-            
+            self.message_handlers: Dict[str, Callable] = {}
             self.client.connect(self.broker_host, self.broker_port, keepalive=60)
             self.client.loop_start()
             system_logger.success(f"MQTT Client network loop started: {self.broker_host}")
