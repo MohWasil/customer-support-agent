@@ -47,7 +47,7 @@
 from pydantic import BaseModel, Field, field_validator
 import re
 import time
-from typing import List, Optional
+from typing import List
 
 class ChatRequest(BaseModel):
     # Standardizing question length for model performance and cost control
