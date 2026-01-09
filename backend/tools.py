@@ -7,6 +7,8 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 from rag_with_memory import MemoryRAG
 import glob
+from fastapi import HTTPException
+from loguru import logger
 
 possible_paths = [
     "/app/data/knowledge_base",
@@ -22,10 +24,19 @@ for p in possible_paths:
         break
 
 if not KNOWLEDGE_BASE_PATH:
-    print("CRITICAL: No .md files found in any knowledge base path!")
+    logger.critical("No .md files found in any knowledge base path!")
     rag_engine = None
+
 else:
-    print(f"Loading Knowledge Base from: {KNOWLEDGE_BASE_PATH}")
+    raise HTTPException(status_code=503,
+                        detail="The knowledge base is currently unavailable. Please try again later.")
+
+
+# if not KNOWLEDGE_BASE_PATH:
+#     print("CRITICAL: No .md files found in any knowledge base path!")
+#     rag_engine = None
+# else:
+#     print(f"Loading Knowledge Base from: {KNOWLEDGE_BASE_PATH}")
 
 # Initialize the local RAG engine once
 try:
