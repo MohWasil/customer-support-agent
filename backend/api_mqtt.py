@@ -17,6 +17,7 @@ from mqtt_client import MQTTClient
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("api-gateway")
 
+
 # -------------------------------------------------
 # App Lifespan
 # -------------------------------------------------

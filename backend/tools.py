@@ -28,36 +28,66 @@ if not KNOWLEDGE_BASE_PATH:
     rag_engine = None
 
 else:
-    raise HTTPException(status_code=503,
-                        detail="The knowledge base is currently unavailable. Please try again later.")
-
-
+    logger.info(f"Knowledge Base detected at: {KNOWLEDGE_BASE_PATH}")
+    try:
+        rag_engine = MemoryRAG(docs_path=KNOWLEDGE_BASE_PATH)
+        logger.success("RAG Engine initialized successfully.")
+    except Exception as e:
+        logger.exception(f"Failed to initialize MemoryRAG: {e}")
+        rag_engine = None
+        
+        
 # if not KNOWLEDGE_BASE_PATH:
 #     print("CRITICAL: No .md files found in any knowledge base path!")
 #     rag_engine = None
 # else:
 #     print(f"Loading Knowledge Base from: {KNOWLEDGE_BASE_PATH}")
 
+
+
 # Initialize the local RAG engine once
-try:
-    rag_engine = MemoryRAG(docs_path=KNOWLEDGE_BASE_PATH)
-except Exception as e:
-    print(f"Error initializing Local RAG: {e}")
-    rag_engine = None
+
+
+# try:
+#     rag_engine = MemoryRAG(docs_path=KNOWLEDGE_BASE_PATH)
+# except Exception as e:
+#     print(f"Error initializing Local RAG: {e}")
+#     rag_engine = None
+
 
 class KnowledgeBaseInput(BaseModel):
     query: str = Field(description="User's question about coffee products, resets, or warranty")
 
+# @tool(args_schema=KnowledgeBaseInput, return_direct=True)
+# def knowledge_base_search(query: str) -> str:
+#     """Search product documentation and FAQs to provide accurate answers about company products, warranty, and reset procedures."""
+#     if not rag_engine:
+#         return "The knowledge base is currently unavailable."
+    
+#     # query() in rag_with_memory handles the local search and memory logic
+#     result = rag_engine.query(query, session_id="agent_tool_session")
+    
+#     return result.get("answer", "No relevant information found in the documentation.")
+
+
+
 @tool(args_schema=KnowledgeBaseInput, return_direct=True)
 def knowledge_base_search(query: str) -> str:
-    """Search product documentation and FAQs to provide accurate answers about company products, warranty, and reset procedures."""
+    """Search product documentation for coffee products, resets, warranty, customer service policy, installation safety, maintenance procedures or troubleshooting guide."""
+    
+    # 1. Graceful check: Inform the LLM/User without crashing the whole API
     if not rag_engine:
-        return "The knowledge base is currently unavailable."
+        logger.warning(f"Search attempted but RAG engine is None. Query: {query}")
+        return "I'm sorry, my internal knowledge base is currently offline. Please contact human support."
+
+    try:
+        result = rag_engine.query(query, session_id="agent_tool_session")
+        return result.get("answer", "I couldn't find specific information about that in our records.")
     
-    # query() in rag_with_memory handles the local search and memory logic
-    result = rag_engine.query(query, session_id="agent_tool_session")
-    
-    return result.get("answer", "No relevant information found in the documentation.")
+    except Exception as e:
+        # 2. Log the exact error for you to fix later
+        logger.error(f"Error during RAG query: {e}")
+        return "I encountered a technical error while searching the documents. Please try rephrasing."
 
 
 
