@@ -1,6 +1,5 @@
 from threading import Lock
 from langchain_classic.memory import ConversationBufferWindowMemory
-import uuid
 
 class SessionManager:
     def __init__(self, max_sessions=100):
