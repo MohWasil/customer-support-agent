@@ -7,7 +7,6 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 from rag_with_memory import MemoryRAG
 import glob
-from fastapi import HTTPException
 from loguru import logger
 
 possible_paths = [
