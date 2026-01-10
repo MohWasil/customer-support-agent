@@ -229,12 +229,27 @@ class MemoryRAG:
             history_aware_retriever = create_history_aware_retriever(self.llm, self.retriever, context_prompt)
 
             # QA Prompt
+            # qa_prompt = ChatPromptTemplate.from_messages([
+            #     ("system", "You are SmartCoffee Support AI. Use context: {context}"),
+            #     MessagesPlaceholder(variable_name="chat_history"),
+            #     ("human", "{input}"),
+            # ])
             qa_prompt = ChatPromptTemplate.from_messages([
-                ("system", "You are SmartCoffee Support AI. Use context: {context}"),
+                ("system", (
+                    "You are the SmartCoffee Support AI. Use the provided context to answer the user's question. "
+                    "\n\n"
+                    "### FORMATTING RULES:\n"
+                    "- Use **Markdown** for all responses.\n"
+                    "- If the answer involves a process or multiple steps, use a **numbered list** (1, 2, 3).\n"
+                    "- If the answer contains several facts, use **bullet points** (•).\n"
+                    "- Use **bold text** for button names or important terms (e.g., 'Press the **Brew** button').\n"
+                    "- Keep the response concise and avoid long paragraphs."
+                    "\n\n"
+                    "Context: {context}"
+                )),
                 MessagesPlaceholder(variable_name="chat_history"),
                 ("human", "{input}"),
-            ])
-
+                    ])
             question_answer_chain = create_stuff_documents_chain(self.llm, qa_prompt)
             self.rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
             
