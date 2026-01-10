@@ -49,6 +49,20 @@ body {
     opacity: 0.9;
 }
 
+
+/* message indentation of the Agent Output */
+.message-content ol {
+    margin-left: 0.1rem;
+    padding-left: 0.1rem;
+}
+
+.message-content li {
+    padding-left: 0.15rem;
+    margin-left: 30px;
+}
+
+
+
 /* Messages Area */
 .messages-area {
     flex: 1;
