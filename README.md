@@ -42,29 +42,35 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 | **Message Bus**  | MQTT Mosquitto                     | Decouples frontend from backend                 |
 | **Monitoring**   | Prometheus + Grafana               | 15+ metrics, 3 dashboards                       |
 | **Logging**      | Logue + JSON + CloudWatch          | Structured logs for debugging                   |
+
 ```
 
 ----
+
 ### 🚀 Quick Start:
 
 
 ##### Clone repository
+
 ```bash
 git clone https://github.com/MohWasil/customer-support-agent.git
 cd customer-support-agent
 ```
 ##### 1. Configure secrets
+
 ```bash
 cp .env.template .env
 ```
 Edit .env with your Groq/HF API keys
 
 ##### 2. Build & run
+
 ```bash
 docker-compose up --build -d
 ```
 
 ##### 3. Access services
+
 ```bash
 Frontend: http://localhost:3000
 API Docs: http://localhost:8000/docs
@@ -72,6 +78,7 @@ Grafana:  http://localhost:3001
 Prometheus: http://localhost:9090
 ```
 ##### 4. View logs
+
 ```bash
 docker-compose logs -f agent-worker
 ```
