@@ -166,7 +166,7 @@ class SupportAgent:
         self.llm = ChatGroq(
             api_key=os.getenv("Grouq_API_KEY"), 
             model_name="llama-3.1-8b-instant",
-            temperature=0.0
+            temperature=0.1
         )
 
         template = """Role: You are a strict Customer Support Agent for SmartCoffee.
