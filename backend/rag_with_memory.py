@@ -228,12 +228,6 @@ class MemoryRAG:
 
             history_aware_retriever = create_history_aware_retriever(self.llm, self.retriever, context_prompt)
 
-            # QA Prompt
-            # qa_prompt = ChatPromptTemplate.from_messages([
-            #     ("system", "You are SmartCoffee Support AI. Use context: {context}"),
-            #     MessagesPlaceholder(variable_name="chat_history"),
-            #     ("human", "{input}"),
-            # ])
             qa_prompt = ChatPromptTemplate.from_messages([
                 ("system", (
                     "You are the SmartCoffee Support AI. Use the provided context to answer the user's question. "
