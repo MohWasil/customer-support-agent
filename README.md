@@ -6,7 +6,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-1.1.3-1C3AA9.svg)](https://python.langchain.com/)
 [![Docker](https://img.shields.io/badge/Docker-25.0+-2496ED.svg)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 **An end-to-end AI-powered customer support agent demonstrating RAG, Agentic AI, MLOps, and cloud deployment—all on the AWS Free Tier.**
 
@@ -48,7 +48,7 @@ graph TD
 
 #### Component Responsibilities
 
-```
+```bash
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
 | **Frontend**     | Vanilla JS + CSS Grid              | Modern chat UI with real-time updates           |
@@ -67,30 +67,30 @@ graph TD
 
 
 ##### Clone repository
-```
+```bash
 git clone https://github.com/MohWasil/customer-support-agent.git
 cd customer-support-agent
 ```
 ##### 1. Configure secrets
-```
+```bash
 cp .env.template .env
 ```
 Edit .env with your Groq/HF API keys
 
 ##### 2. Build & run
-```
+```bash
 docker-compose up --build -d
 ```
 
 ##### 3. Access services
-```
-# Frontend: http://localhost:3000
-# API Docs: http://localhost:8000/docs
-# Grafana:  http://localhost:3001 (admin/admin123)
-# Prometheus: http://localhost:9090
+```bash
+Frontend: http://localhost:3000
+API Docs: http://localhost:8000/docs
+Grafana:  http://localhost:3001 (admin/admin123)
+Prometheus: http://localhost:9090
 ```
 ##### 4. View logs
-```
+```bash
 docker-compose logs -f agent-worker
 ```
 
