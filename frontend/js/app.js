@@ -88,14 +88,13 @@ async function checkConnection() {
     }
 }
 
-// 1. Create a variable outside the function to track the LAST known state
+// 1. variable to track the LAST known state
 let lastStatus = null; 
 let statusTimeout;
 
 function updateConnectionStatus(isConnected) {
     const status = elements.connectionStatus;
     
-    // 2. NEW LOGIC: If the status hasn't actually changed, DO NOTHING.
     // This stops the constant "re-appearing" loop.
     if (isConnected === lastStatus) return;
 
