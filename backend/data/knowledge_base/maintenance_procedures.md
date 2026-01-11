@@ -1,4 +1,5 @@
 # SmartCoffee Pro Maintenance instruction: 
+
 Daily Maintenance instruction:
 1. Steam Wand: Purge and wipe with a damp cloth after every use to prevent milk residue hardening.
 2. Components: Empty and rinse the drip tray and grounds container daily.

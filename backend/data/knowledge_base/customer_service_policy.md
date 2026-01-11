@@ -1,4 +1,5 @@
 # SmartCoffee Pro Customer Service Policy:
+
 These are the customers services that must be noticed by the staff.
 1. Greeting Standard: Staff must greet customers within 5 seconds of entry with a smile and eye contact.
 2. Order Accuracy: Always repeat the order back to the customer before finalizing the transaction.

@@ -1,4 +1,5 @@
 # SmartCofee Pro Troubleshooting guidance:
+
 App Connectivity (Smart Life App):
 1. Network: Only supports 2.4GHz Wi-Fi signals; ensure the phone has "forgotten" any 5GHz networks before setup.
 2. Default Mode: Indicator light must flash rapidly (2 blinks per second).
