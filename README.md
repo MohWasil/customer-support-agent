@@ -26,29 +26,11 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 - 💰 Cost per Query: **$0.001** (vs $1.3 human)
 - 📈 Scalability: **100+ concurrent users** on t2.micro
 
----
-
-### 🏗️ Architecture
-
-### **High-Level System Design**
-
-```mermaid
-graph TD
-    UI[Frontend: React-like SPA&lt;br/&gt;http://localhost:3000] --&gt;|HTTPS| API[FastAPI Gateway&lt;br/&gt;Port 8000]
-    API --&gt;|MQTT_pub| Broker[MQTT Broker&lt;br/&gt;Mosquitto:1883]
-    Broker --&gt;|MQTT_sub| Worker[Agent Worker&lt;br/&gt;LangChain ReAct]
-    Worker --&gt;|Query| RAG[RAG Pipeline&lt;br/&gt;ChromaDB + Embeddings]
-    Worker --&gt;|Generate| LLM[LLM Provider&lt;br/&gt;Groq/HF API]
-    API --&gt;|Metrics| Prom[Prometheus&lt;br/&gt;Port 9090]
-    Prom --&gt;|Data| Grafana[Grafana Dashboard&lt;br/&gt;Port 3001]
-    Worker --&gt;|Logs| Fluentd[JSON Logs → CloudWatch]
-    User&gt;User] --&gt; UI
-```
 ----
 
 #### Component Responsibilities
 
-```
+```bash
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
 | **Frontend**     | Vanilla JS + CSS Grid              | Modern chat UI with real-time updates           |
