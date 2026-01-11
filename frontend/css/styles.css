@@ -51,15 +51,31 @@ body {
 
 
 /* message indentation of the Agent Output */
+/* Ensure the list markers actually show up */
+.message-content ul {
+    list-style-type: disc !important; /* Forces bullet points */
+    margin: 10px 0 10px 20px;
+    padding-left: 10px;
+}
+
 .message-content ol {
-    margin-left: 0.1rem;
-    padding-left: 0.1rem;
+    list-style-type: decimal !important; /* Forces numbers */
+    margin: 10px 0 10px 20px;
+    padding-left: 10px;
 }
 
 .message-content li {
-    padding-left: 0.15rem;
-    margin-left: 30px;
+    margin-bottom: 5px;
+    display: list-item; /* Ensures it behaves like a list line */
 }
+
+/* Headers styling */
+.message-content h3 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
 
 
 

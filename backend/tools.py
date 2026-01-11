@@ -36,11 +36,11 @@ else:
         rag_engine = None
 
 class KnowledgeBaseInput(BaseModel):
-    query: str = Field(description="User's question about coffee products, resets, warranty,customer service policy, installation safety, maintenance procedures or troubleshooting guide.")
+    query: str = Field(description="User's question about coffee products, resets, warranty, installation safety, maintenance procedures, or troubleshooting guide.")
 
 @tool(args_schema=KnowledgeBaseInput, return_direct=True)
 def knowledge_base_search(query: str) -> str:
-    """Search product documentation and FAQs to provide accurate answers about company products, resets, warranty, customer service policy, installation safety, maintenance procedures or troubleshooting guide."""
+    """Search product documentation and FAQs to provide accurate answers about company products, technical procedures, warranty details, and maintenance schedules."""
     
     # 1. Graceful check: Inform the LLM/User without crashing the whole API
     if not rag_engine:

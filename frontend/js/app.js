@@ -198,14 +198,56 @@ function escapeHtml(unsafe) {
     .replace(/'/g, "&#039;");
 }
 
-function renderContent(content) {
-  // sanitize, then convert simple markdown + lists + newlines to HTML
-  let html = escapeHtml(content);
+// function renderContent(content) {
+//   // sanitize, then convert simple markdown + lists + newlines to HTML
+//   let html = escapeHtml(content);
 
-  // bold **text**
+//   // bold **text**
+//   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+//   // split into lines and convert to paragraphs / lists
+//   const lines = html.split(/\r?\n/);
+//   let out = "";
+//   let inUl = false;
+//   let inOl = false;
+
+//   for (let rawLine of lines) {
+//     const line = rawLine.trim();
+//     if (line === "") {
+//       // blank line -> close lists and add spacing
+//       if (inUl) { out += "</ul>"; inUl = false; }
+//       if (inOl) { out += "</ol>"; inOl = false; }
+//       out += "<p></p>";
+//       continue;
+//     }
+
+//     if (/^[-•]\s+/.test(line)) {
+//       if (!inUl) { if (inOl) { out += "</ol>"; inOl = false; } out += "<ul>"; inUl = true; }
+//       out += `<li>${line.replace(/^[-•]\s+/, "")}</li>`;
+//       continue;
+//     }
+
+//     if (/^\d+\.\s+/.test(line)) {
+//       if (!inOl) { if (inUl) { out += "</ul>"; inUl = false; } out += "<ol>"; inOl = true; }
+//       out += `<li>${line.replace(/^\d+\.\s+/, "")}</li>`;
+//       continue;
+//     }
+
+//     // normal paragraph line
+//     if (inUl) { out += "</ul>"; inUl = false; }
+//     if (inOl) { out += "</ol>"; inOl = false; }
+//     out += `<p>${line}</p>`;
+//   }
+
+//   if (inUl) out += "</ul>";
+//   if (inOl) out += "</ol>";
+//   return out;
+// }
+
+function renderContent(content) {
+  let html = escapeHtml(content);
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
-  // split into lines and convert to paragraphs / lists
   const lines = html.split(/\r?\n/);
   let out = "";
   let inUl = false;
@@ -213,36 +255,38 @@ function renderContent(content) {
 
   for (let rawLine of lines) {
     const line = rawLine.trim();
+    
+    // Updated Regex: Now includes '*' and handles different spacing
+    const isUl = /^[*•-]\s+/.test(line);
+    const isOl = /^\d+[.)]\s+/.test(line);
+
     if (line === "") {
-      // blank line -> close lists and add spacing
+        if (inUl) { out += "</ul>"; inUl = false; }
+        if (inOl) { out += "</ol>"; inOl = false; }
+        continue; 
+    }
+
+    if (line.startsWith('###')) {
+        if (inUl) { out += "</ul>"; inUl = false; }
+        if (inOl) { out += "</ol>"; inOl = false; }
+        out += `<h3>${line.replace(/^###\s*/, '')}</h3>`;
+    } else if (isUl) {
+      if (!inUl) { out += "<ul>"; inUl = true; }
+      out += `<li>${line.replace(/^[*•-]\s+/, "")}</li>`;
+    } else if (isOl) {
+      if (!inOl) { out += "<ol>"; inOl = true; }
+      out += `<li>${line.replace(/^\d+[.)]\s+/, "")}</li>`;
+    } else {
       if (inUl) { out += "</ul>"; inUl = false; }
       if (inOl) { out += "</ol>"; inOl = false; }
-      out += "<p></p>";
-      continue;
+      out += `<p>${line}</p>`;
     }
-
-    if (/^[-•]\s+/.test(line)) {
-      if (!inUl) { if (inOl) { out += "</ol>"; inOl = false; } out += "<ul>"; inUl = true; }
-      out += `<li>${line.replace(/^[-•]\s+/, "")}</li>`;
-      continue;
-    }
-
-    if (/^\d+\.\s+/.test(line)) {
-      if (!inOl) { if (inUl) { out += "</ul>"; inUl = false; } out += "<ol>"; inOl = true; }
-      out += `<li>${line.replace(/^\d+\.\s+/, "")}</li>`;
-      continue;
-    }
-
-    // normal paragraph line
-    if (inUl) { out += "</ul>"; inUl = false; }
-    if (inOl) { out += "</ol>"; inOl = false; }
-    out += `<p>${line}</p>`;
   }
-
-  if (inUl) out += "</ul>";
-  if (inOl) out += "</ol>";
   return out;
 }
+
+
+
 
 function addMessageToUI(content, sender, sources = null) {
     const messageDiv = document.createElement('div');
