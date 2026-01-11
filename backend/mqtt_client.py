@@ -195,7 +195,6 @@ try:
     __import__('pysqlite3')
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
-    # Fallback for environments where pysqlite3 isn't needed
     pass
 
 
