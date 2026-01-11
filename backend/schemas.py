@@ -58,7 +58,7 @@ class ChatRequest(BaseModel):
         description="The user's query for the AI agent"
     )
     
-    # Enhanced pattern for 2026 session management (allowing common prefixes like 'http_')
+    # Enhanced pattern for common prefixes like 'http_'
     session_id: str = Field(
         default="default", 
         pattern=r"^[a-zA-Z0-9_\-\.]+$",
@@ -72,7 +72,6 @@ class ChatRequest(BaseModel):
         v = re.sub(r'\s+', ' ', v).strip()
         
         # 2. Advanced Security: Heuristic check for prompt injection
-        # Instead of just keywords, we check for 'system instructions' logic
         forbidden_patterns = [
             r"ignore previous instructions", 
             r"system prompt", 
@@ -84,7 +83,6 @@ class ChatRequest(BaseModel):
         lower_v = v.lower()
         for pattern in forbidden_patterns:
             if re.search(pattern, lower_v):
-                # In production, we raise a 422 error via FastAPI
                 raise ValueError("Message contains restricted administrative patterns.")
         
         return v
