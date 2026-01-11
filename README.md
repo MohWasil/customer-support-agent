@@ -30,6 +30,7 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 
 #### Component Responsibilities
 
+
 ```
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
@@ -41,7 +42,6 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 | **Message Bus**  | MQTT Mosquitto                     | Decouples frontend from backend                 |
 | **Monitoring**   | Prometheus + Grafana               | 15+ metrics, 3 dashboards                       |
 | **Logging**      | Logue + JSON + CloudWatch          | Structured logs for debugging                   |
-
 ```
 
 ----
@@ -98,13 +98,13 @@ Agent Performance Dashboard (http://localhost:3001)
 
 ----
 ### 🛡️ Security & Best Practices
-✅ Input Sanitization: Pydantic models block prompt injection
-✅ Rate Limiting: 10 req/min per IP (configurable)
-✅ CORS: Restricted to whitelisted origins
-✅ Secrets: All keys in .env, never committed
-✅ Auth: HTTP Bearer tokens ready for user management
-✅ TLS: Nginx SSL termination configured (use certbot in prod)
-✅ Audit Logging: All requests logged with session IDs
+- ✅ Input Sanitization: Pydantic models block prompt injection.
+- ✅ Rate Limiting: 10 req/min per IP (configurable).
+- ✅ CORS: Restricted to whitelisted origins.
+- ✅ Secrets: All keys in .env, never committed.
+- ✅ Auth: HTTP Bearer tokens ready for user management.
+- ✅ TLS: Nginx SSL termination configured (use certbot in prod).
+- ✅ Audit Logging: All requests logged with session IDs.
 
 ----
 
