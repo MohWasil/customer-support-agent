@@ -30,7 +30,7 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 
 #### Component Responsibilities
 
-```bash
+```
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
 | **Frontend**     | Vanilla JS + CSS Grid              | Modern chat UI with real-time updates           |
@@ -68,7 +68,7 @@ docker-compose up --build -d
 ```bash
 Frontend: http://localhost:3000
 API Docs: http://localhost:8000/docs
-Grafana:  http://localhost:3001 (admin/admin123)
+Grafana:  http://localhost:3001 
 Prometheus: http://localhost:9090
 ```
 ##### 4. View logs
