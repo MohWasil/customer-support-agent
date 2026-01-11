@@ -190,68 +190,6 @@ async function callSupportAgent(question) {
         state.lastActivity = Date.now();
     }
 }
-
-// function addMessageToUI(content, sender, sources = null) {
-//     const messageDiv = document.createElement('div');
-//     messageDiv.className = `message ${sender}`;
-
-//     const contentDiv = document.createElement('div');
-//     contentDiv.className = 'message-content';
-//     contentDiv.textContent = content;
-
-//     const timestampDiv = document.createElement('div');
-//     timestampDiv.className = 'message-timestamp';
-//     timestampDiv.textContent = formatTimestamp(Date.now());
-
-//     messageDiv.appendChild(contentDiv);
-//     messageDiv.appendChild(timestampDiv);
-
-//     if (sender === 'bot' && sources && sources.length > 0) {
-//         const sourcesDiv = document.createElement('div');
-//         sourcesDiv.className = 'message-sources';
-//         sourcesDiv.textContent = `Source: ${sources.join(', ')}`;
-//         messageDiv.appendChild(sourcesDiv);
-//     }
-
-//     if (sender === 'bot') {
-//     console.log("Bot message detected, adding buttons..."); // DEBUG LOG
-//     const feedbackDiv = document.createElement('div');
-//     feedbackDiv.className = 'message-feedback';
-
-//     const thumbsUp = document.createElement('button');
-//     thumbsUp.type = 'button'; // Explicitly set type
-//     thumbsUp.innerHTML = '👍';
-//         thumbsUp.title = 'Helpful';
-//         thumbsUp.onclick = () => {
-//             thumbsUp.classList.add('clicked');
-//             thumbsDown.disabled = true;
-//             recordFeedback('thumbs_up', state.sessionId);
-//         };
-
-//         const thumbsDown = document.createElement('button');
-//         thumbsDown.innerHTML = '👎';
-//         thumbsDown.title = 'Not helpful';
-//         thumbsDown.onclick = () => {
-//             thumbsDown.classList.add('clicked');
-//             thumbsUp.disabled = true;
-//             recordFeedback('thumbs_down', state.sessionId);
-//         };
-
-//         feedbackDiv.appendChild(thumbsUp);
-//         feedbackDiv.appendChild(thumbsDown);
-//         messageDiv.appendChild(feedbackDiv);
-//     }
-
-//     elements.messagesArea.appendChild(messageDiv);
-//     scrollToBottom();
-// }
-
-
-
-
-
-
-
 function escapeHtml(unsafe) {
   return unsafe
     .replace(/&/g, "&amp;")
@@ -306,9 +244,7 @@ function renderContent(content) {
   if (inOl) out += "</ol>";
   return out;
 }
-// --- End helpers ---
 
-// --- Replace your existing addMessageToUI function with this ---
 function addMessageToUI(content, sender, sources = null) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
@@ -365,13 +301,6 @@ function addMessageToUI(content, sender, sources = null) {
     elements.messagesArea.appendChild(messageDiv);
     scrollToBottom();
 }
-
-
-
-
-
-
-
 
 async function recordFeedback(rating, sessionId) {
     try {
