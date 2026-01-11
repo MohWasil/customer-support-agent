@@ -204,7 +204,6 @@ from mqtt_client import MQTTClient
 # -------------------------------------------------
 # 1. Loguru Configuration
 # -------------------------------------------------
-# Remove default logger and setup for production with JSON-like extra context
 logger.remove()
 logger.add(
     sys.stdout, 
