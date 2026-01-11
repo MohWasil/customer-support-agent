@@ -182,7 +182,7 @@ class MemoryRAG:
             if not docs:
                 logger.warning(f"No documents found in {docs_path}. RAG will be empty.")
 
-            splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
+            splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=100)
             chunks = splitter.split_documents(docs)
 
             # 2. Vector DB - Persistent storage
@@ -210,7 +210,7 @@ class MemoryRAG:
             self.llm = ChatHuggingFace(llm=self.raw_llm)
 
             # 4. Chains Setup
-            self.retriever = self.db.as_retriever(search_kwargs={"k": 2})
+            self.retriever = self.db.as_retriever(search_kwargs={"k": 6})
             
             contextualize_q_system_prompt = (
             "Given a chat history and the latest user question "
@@ -237,6 +237,8 @@ class MemoryRAG:
                     "- If the answer contains several facts, use **bullet points** (•).\n"
                     "- Use **bold text** for button names or important terms (e.g., 'Press the **Brew** button').\n"
                     "- Keep the response concise and avoid long paragraphs."
+                    "- If the answer is not in the context, say: 'I'm sorry, I don't have that specific policy in my records.'\n"
+                    "- DO NOT use your internal knowledge to invent support tiers, response times, or phone numbers.\n"
                     "\n\n"
                     "Context: {context}"
                 )),
