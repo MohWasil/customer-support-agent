@@ -10,4 +10,7 @@ Warranty does NOT cover:
 - Commercial use
 - Accidents
 
-Contact support@smartcoffee.com for claims.
+## Support Channels
+*   **Email Support:** help@smartcoffee.com
+*   **Phone Support:** 1-800-555-0123 (Available 9 AM - 5 PM EST)
+*   **Help Center:** [www.smartcoffee.com](http://www.smartcoffee.com)
