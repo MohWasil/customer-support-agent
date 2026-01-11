@@ -31,7 +31,6 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 #### Component Responsibilities
 
 
-```mermaid
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
 | **Frontend**     | Vanilla JS + CSS Grid              | Modern chat UI with real-time updates           |
@@ -42,8 +41,6 @@ E-commerce businesses spend **$1.3 per support ticket** on average. This AI agen
 | **Message Bus**  | MQTT Mosquitto                     | Decouples frontend from backend                 |
 | **Monitoring**   | Prometheus + Grafana               | 15+ metrics, 3 dashboards                       |
 | **Logging**      | Logue + JSON + CloudWatch          | Structured logs for debugging                   |
-
-```
 
 ----
 
