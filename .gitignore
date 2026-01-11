@@ -14,6 +14,9 @@ chroma_db/
 *.safetensors
 *.bin
 
+# Other files
+commands.txt
+
 # IDE
 .vscode/
 .idea/
