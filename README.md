@@ -43,12 +43,12 @@ graph TD
     Prom --&gt;|Data| Grafana[Grafana Dashboard&lt;br/&gt;Port 3001]
     Worker --&gt;|Logs| Fluentd[JSON Logs → CloudWatch]
     User&gt;User] --&gt; UI
-
+```
 ----
 
 #### Component Responsibilities
 
-```bash
+```
 | Component        | Tech Stack                         | What It Does                                    |
 | ---------------- | ---------------------------------- | ----------------------------------------------- |
 | **Frontend**     | Vanilla JS + CSS Grid              | Modern chat UI with real-time updates           |
