@@ -34,41 +34,9 @@ else:
     except Exception as e:
         logger.exception(f"Failed to initialize MemoryRAG: {e}")
         rag_engine = None
-        
-        
-# if not KNOWLEDGE_BASE_PATH:
-#     print("CRITICAL: No .md files found in any knowledge base path!")
-#     rag_engine = None
-# else:
-#     print(f"Loading Knowledge Base from: {KNOWLEDGE_BASE_PATH}")
-
-
-
-# Initialize the local RAG engine once
-
-
-# try:
-#     rag_engine = MemoryRAG(docs_path=KNOWLEDGE_BASE_PATH)
-# except Exception as e:
-#     print(f"Error initializing Local RAG: {e}")
-#     rag_engine = None
-
 
 class KnowledgeBaseInput(BaseModel):
     query: str = Field(description="User's question about coffee products, resets, warranty,customer service policy, installation safety, maintenance procedures or troubleshooting guide.")
-
-# @tool(args_schema=KnowledgeBaseInput, return_direct=True)
-# def knowledge_base_search(query: str) -> str:
-#     """Search product documentation and FAQs to provide accurate answers about company products, warranty, and reset procedures."""
-#     if not rag_engine:
-#         return "The knowledge base is currently unavailable."
-    
-#     # query() in rag_with_memory handles the local search and memory logic
-#     result = rag_engine.query(query, session_id="agent_tool_session")
-    
-#     return result.get("answer", "No relevant information found in the documentation.")
-
-
 
 @tool(args_schema=KnowledgeBaseInput, return_direct=True)
 def knowledge_base_search(query: str) -> str:
