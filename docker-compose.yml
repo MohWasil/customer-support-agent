@@ -1,7 +1,6 @@
 services:
   # cadvisor service for container monitoring
   cadvisor:
-    # image: gcr.io/cadvisor/cadvisor:v0.49.1
     image: ghcr.io/google/cadvisor:0.55.1
     container_name: cadvisor
     command:
