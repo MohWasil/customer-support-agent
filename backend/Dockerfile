@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 WORKDIR /app
 COPY ./data/knowledge_base /app/data/knowledge_base
 
-# Copy application code (from the current build context directory ./backend)
+# Copy application code
 COPY . .
 
 
@@ -33,5 +33,4 @@ HEALTHCHECK --interval=30s --timeout=3s \
 
 EXPOSE 8000
 
-# CMD ["uvicorn", "api_mqtt:app", "--host", "0.0.0.0", "--port", "8000"]
 CMD ["python", "-m", "uvicorn", "api_mqtt:app", "--host", "0.0.0.0", "--port", "8000"]
