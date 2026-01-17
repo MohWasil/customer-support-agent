@@ -2,16 +2,15 @@
 
 &lt;div align="center"&gt;
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-1.1.3-1C3AA9.svg)](https://python.langchain.com/)
 [![Docker](https://img.shields.io/badge/Docker-25.0+-2496ED.svg)](https://www.docker.com/)
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-**An end-to-end AI-powered customer support agent demonstrating RAG, Agentic AI, MLOps, and cloud deployment—all on the AWS Free Tier.**
+**An end-to-end AI-powered customer support agent demonstrating RAG, Agentic AI, MLOps, and cloud deployment all on the HuggingFace Free Tier.**
 
-[🏠 Live Demo](https://huggingface.co/spaces/MWasil/customer-support-agent-space) | [📊 Monitoring Dashboard](http://your-ec2-ip:3001) | [📖 Architecture](#architecture) | [🚀 Quick Start](#quick-start)
-
+[🏠 Live Demo](https://huggingface.co/spaces/MWasil/customer-support-agent-space)
 &lt;/div&gt;
 
 ---
