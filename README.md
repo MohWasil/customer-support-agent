@@ -2,7 +2,7 @@
 
 &lt;div align="center"&gt;
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-1.1.3-1C3AA9.svg)](https://python.langchain.com/)
 [![Docker](https://img.shields.io/badge/Docker-25.0+-2496ED.svg)](https://www.docker.com/)
@@ -10,7 +10,7 @@
 
 **An end-to-end AI-powered customer support agent demonstrating RAG, Agentic AI, MLOps, and cloud deployment—all on the AWS Free Tier.**
 
-[🏠 Live Demo](http://your-ec2-ip:3000) | [📊 Monitoring Dashboard](http://your-ec2-ip:3001) | [📖 Architecture](#architecture) | [🚀 Quick Start](#quick-start)
+[🏠 Live Demo](https://huggingface.co/spaces/MWasil/customer-support-agent-space) | [📊 Monitoring Dashboard](http://your-ec2-ip:3001) | [📖 Architecture](#architecture) | [🚀 Quick Start](#quick-start)
 
 &lt;/div&gt;
 
