@@ -134,12 +134,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Qwen/Qwen2.5-1.5B-Instruct
-# microsoft/phi-3.5-mini-3.8b-instruct
-# microsoft/DialoGPT-medium
-# Using a conversational model like DialoGPT
 class SimpleRAG:
-    def __init__(self, docs_path: str, model: str = "google/gemma-2-2b-it"): # Conversational model
+    def __init__(self, docs_path: str, model: str = "google/gemma-2-2b-it"): 
         # 1. Load documents
         loader = DirectoryLoader(docs_path, glob="*.md")
         docs = loader.load()
@@ -171,34 +167,23 @@ class SimpleRAG:
             token=os.getenv("HF_API_TOKEN")
         )
 
-    # Note: DialoGPT might need simpler history management, this is adapted for chat_completion structure
-    # DialoGPT usually works better with previous conversation context as input
     def query(self, question: str) -> dict:
         # Retrieve top 2 docs
         docs = self.db.similarity_search(question, k=2)
         context = "\n\n".join([d.page_content for d in docs])
 
-        # Build prompt for a conversational model
-        # DialoGPT expects a history of conversation. We'll format context as a system/user message.
-        # However, HuggingFace's chat_completion might expect a list of message dictionaries.
-        # Let's try the standard chat format first.
-        # Note: DialoGPT might not handle system messages well; if this fails, we might need text_generation or a different model.
         messages = [
             {"role": "system", "content": f"You are a customer support agent. Use ONLY the context below to answer the user's question. Context: {context}"},
             {"role": "user", "content": question}
         ]
 
         try:
-            # Use chat_completion for conversational models
             resp = self.client.chat_completion(
                 messages=messages,
                 max_tokens=150,
                 temperature=0.1
             )
 
-            # Extract the generated text from the response
-            # The structure might vary slightly depending on the exact model/provider
-            # Typical structure: {'choices': [{'message': {'content': '...'}}]}
             if resp and resp.choices and resp.choices[0].message and resp.choices[0].message.content:
                  answer_text = resp.choices[0].message.content.strip()
             else:
@@ -215,21 +200,9 @@ class SimpleRAG:
             return {"answer": "An error occurred processing your request (StopIteration).", "sources": []}
         except Exception as e:
             print(f"An unexpected error occurred with model {self.model}: {e}")
-            # Attempt to get a generic response or return an error message
-            # For DialoGPT-like models, `text_generation` might be more appropriate, but requires different prompt formatting
             return {"answer": f"An unexpected error occurred with model {self.model}. Error: {e}", "sources": []}
 
 
-# Test it
 if __name__ == "__main__":
     rag = SimpleRAG("./backend/data/knowledge_base")
 
-    test_questions = [
-        "How do I reset my coffee maker?"
-    ]
-
-    for q in test_questions:
-        print(f"\nQuestion: {q}")
-        result = rag.query(q)
-        print(f"Answer: {result['answer']}")
-        print(f"Sources: {[s['source'] for s in result['sources']]}")
